@@ -1,0 +1,198 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scribble Search</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        body {
+            background: #FFF5F5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header .logo {
+            width: 120px;
+            margin-bottom: 10px;
+        }
+        .header h1 {
+            color: #2C7A7B;
+            font-family: 'Caveat', cursive;
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+        .search-box {
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 30px;
+            border: 2px solid #F56565;
+        }
+        .search-box input {
+            border: none;
+            outline: none;
+            padding: 10px;
+            flex: 1;
+            font-size: 16px;
+        }
+        .search-box button {
+            background: #F56565;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .search-box button:hover {
+            background: #C53030;
+        }
+        .results {
+            margin-top: 20px;
+        }
+        .result {
+            background: white;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+            border-left: 4px solid #2C7A7B;
+        }
+        .result:hover {
+            transform: translateY(-2px);
+        }
+        .result a {
+            color: #2C7A7B;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 500;
+        }
+        .result a:hover {
+            text-decoration: underline;
+        }
+        .result .url {
+            color: #F56565;
+            font-size: 14px;
+            margin: 5px 0;
+        }
+        .result .score {
+            color: #666;
+            font-size: 12px;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 0 15px;
+            }
+            .header h1 {
+                font-size: 2.5em;
+            }
+            .header .logo {
+                width: 100px;
+            }
+            .search-box {
+                flex-direction: column;
+                padding: 15px;
+            }
+            .search-box input {
+                margin-bottom: 10px;
+                width: 100%;
+            }
+            .search-box button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <svg class="logo" viewBox="0 0 100 100" fill="#2C7A7B">
+                <path d="M20 80 C 30 60, 50 40, 80 20 S 60 60, 40 80 C 30 90, 20 80, 20 80 Z" stroke="#F56565" stroke-width="4" fill="none"/>
+            </svg>
+            <h1>Scribble Search</h1>
+        </div>
+        <form class="search-box" method="get" action="/search">
+            <input type="text" name="q" placeholder="Scribble something to search..." value="{{ query | default('') }}" autocomplete="off">
+            <button type="submit">Search</button>
+        </form>
+        {% if results %}
+            <div class="results">
+                <h3>Results for "{{ query }}"</h3>
+                {% for result in results %}
+                    <div class="result">
+                        <a href="{{ result.url }}" target="_blank">{{ result.title }}</a>
+                        <div class="url">{{ result.url }}</div>
+                        <div class="score">Score: {{ result.score | round(4) }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    <script>
+        const input = document.querySelector('input[name="q"]');
+        input.addEventListener('input', () => {
+            input.value = input.value.trimStart();
+        });
+    </script>
+</body>
+</html>
