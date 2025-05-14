@@ -6,7 +6,7 @@ A basic search engine! built with Flask, indexing Wikipedia pages.
 
 1. Import the repository into Glitch:
    - Go to [glitch.com](https://glitch.com) and click "New Project" > "Import from GitHub."
-   - Enter `https://github.com/<your-username>/scribble-search`.
+   - Enter `https://github.com/DJDlauzy/Scribble-Search-Engine`.
 2. Wait for Glitch to install dependencies (via `requirements.txt`).
 3. Click "Show" to view the app.
 4. Search for terms like "python" or "html".
