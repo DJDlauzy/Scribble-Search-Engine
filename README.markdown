@@ -1,6 +1,6 @@
 # Scribble Search
 
-A basic search engine with Scribble branding, built with Flask, indexing Wikipedia pages.
+A basic search engine! built with Flask, indexing Wikipedia pages.
 
 ## Setup on Glitch
 
@@ -15,7 +15,7 @@ A basic search engine with Scribble branding, built with Flask, indexing Wikiped
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/<your-username>/scribble-search.git
+   git clone https://github.com/DJDlauzy/Scribble-Search-Engine
    cd scribble-search
    ```
 2. Install dependencies:
@@ -26,7 +26,6 @@ A basic search engine with Scribble branding, built with Flask, indexing Wikiped
    ```bash
    python search_engine.py
    ```
-4. Open `http://localhost:5000` in a browser.
 
 ## Notes
 - Indexes three Wikipedia pages (Python, JavaScript, HTML).
