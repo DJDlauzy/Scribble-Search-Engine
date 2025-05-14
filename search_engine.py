@@ -54,6 +54,7 @@ def calculate_idf(word):
     return math.log(len(documents) / (1 + docs_with_word)) if docs_with_word else 0
 
 def search(query):
+    print(query)
     query_words = clean_text(query)
     scores = defaultdict(float)
     for word in query_words:
