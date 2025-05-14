@@ -6,124 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scribble Search</title>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Arial, sans-serif;
-        }
-        body {
-            background: #FFF5F5;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-        }
-        .container {
-            max-width: 800px;
-            width: 100%;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .header .logo {
-            width: 120px;
-            margin-bottom: 10px;
-        }
-        .header h1 {
-            color: #2C7A7B;
-            font-family: 'Caveat', cursive;
-            font-size: 3em;
-            margin-bottom: 10px;
-        }
-        .search-box {
-            background: white;
-            border-radius: 25px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            margin-bottom: 30px;
-            border: 2px solid #F56565;
-        }
-        .search-box input {
-            border: none;
-            outline: none;
-            padding: 10px;
-            flex: 1;
-            font-size: 16px;
-        }
-        .search-box button {
-            background: #F56565;
-            color: white;
-            border: none;
-            border-radius: 20px;
-            padding: 10px 20px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        .search-box button:hover {
-            background: #C53030;
-        }
-        .results {
-            margin-top: 20px;
-        }
-        .result {
-            background: white;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            transition: transform 0.2s;
-            border-left: 4px solid #2C7A7B;
-        }
-        .result:hover {
-            transform: translateY(-2px);
-        }
-        .result a {
-            color: #2C7A7B;
-            text-decoration: none;
-            font-size: 18px;
-            font-weight: 500;
-        }
-        .result a:hover {
-            text-decoration: underline;
-        }
-        .result .url {
-            color: #F56565;
-            font-size: 14px;
-            margin: 5px 0;
-        }
-        .result .score {
-            color: #666;
-            font-size: 12px;
-        }
-        @media (max-width: 600px) {
-            .container {
-                padding: 0 15px;
-            }
-            .header h1 {
-                font-size: 2.5em;
-            }
-            .header .logo {
-                width: 100px;
-            }
-            .search-box {
-                flex-direction: column;
-                padding: 15px;
-            }
-            .search-box input {
-                margin-bottom: 10px;
-                width: 100%;
-            }
-            .search-box button {
-                width: 100%;
-            }
-        }
-    </style>
+    <link href="style.css" rel="stylesheet">
 </head>
 <body>
     <div class="container">
@@ -156,5 +39,6 @@
             input.value = input.value.trimStart();
         });
     </script>
+    <script src="script.js"></script>
 </body>
 </html>
