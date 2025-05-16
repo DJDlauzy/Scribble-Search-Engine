@@ -6,6 +6,8 @@ function filledCell(cell) {
   return cell !== '' && cell != null;
 }
 
+console.log("If everything is working, I should see this.")
+
 function loadFileData(filename) {
 if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
     try {
